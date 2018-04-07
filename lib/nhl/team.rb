@@ -26,7 +26,6 @@ module NHL
           data = JSON.parse(response.body)
           t = data[KEY].find do |t|
             t['name'] == query
-            #[t['id'], t['name']].include?(query)
           end
         else
           response = Faraday.get("#{URL}/#{id}")
