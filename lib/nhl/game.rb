@@ -6,7 +6,7 @@ require 'nhl/helpers'
 module NHL
   class Game
 
-    KEY = "game"
+    KEY = "schedule"
     URL = BASE + KEY
 
     # A list of attributes to include in the Game object.
@@ -28,7 +28,7 @@ module NHL
       # Retrieves all games in a range of time.
       # Dates should be in the format YYYY-MM-DD.
       def in_time_period(start_data, end_date)
-        response = Faraday.get("#{BASE}/schedule?startDate=#{start_date}&endDate=#{end_date}")
+        response = Faraday.get("#{URL}?startDate=#{start_date}&endDate=#{end_date}")
         data = JSON.parse(response.body)
         data['dates'][0]['games'].map do |g| new(g) end
       end
@@ -52,7 +52,7 @@ module NHL
 
       # Retrieves games for a specific date.
       def games_on_date(date)
-        response = Faraday.get("#{BASE}/schedule?date=#{date}")
+        response = Faraday.get("#{URL}?date=#{date}")
         data = JSON.parse(response.body)
         data['dates'][0]['games'].map do |g| new(g) end
       end
