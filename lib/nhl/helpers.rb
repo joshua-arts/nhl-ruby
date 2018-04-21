@@ -4,12 +4,12 @@ require 'date'
 
 # For converting a day string to a day number.
 def convert_day(d)
-  Date::DAYNAMES.index(d.downcase.capitalize)
+  Date::DAYNAMES.index(d.downcase.capitalize) + 1
 end
 
 # For converting a month string to a month number.
 def convert_month(m)
-  m.downcase!.capitalize!
+  m = m.downcase.capitalize
   Date::MONTHNAMES.index(m) || Date::ABBR_MONTHNAMES.index(m)
 end
 
