@@ -31,7 +31,6 @@ module NHL
         # The API does not provide a nice way for searching by name.
         id = query.to_i
         if id == 0
-          query = titleize(query)
           response = Faraday.get("#{BASE}/teams?expand=team.roster")
           data = JSON.parse(response.body)
 
@@ -56,7 +55,7 @@ module NHL
       def player_by_id(id)
         response = Faraday.get("#{URL}/#{id}")
         data = JSON.parse(response.body)
-        new(data[KEY][0])
+        new(data[KEY][0]) if data[KEY]
       end
     end
 
@@ -68,7 +67,7 @@ module NHL
 
     # Finds a players team.
     def team
-      Team.find(@team_id)
+      Team.find(@current_team_id)
     end
 
     # Fetches a players overall stats for a specific season.
