@@ -20,8 +20,8 @@ module NHL
       # Search for a specific team either by id or name.
       def find(query)
         id = query.to_i
+
         if id == 0
-          query = titleize(query)
           response = Faraday.get(URL)
           data = JSON.parse(response.body)
           t = data[KEY].find do |t|
@@ -30,9 +30,10 @@ module NHL
         else
           response = Faraday.get("#{URL}/#{id}")
           data = JSON.parse(response.body)
-          t = data['teams'].first
+          t = data['teams'].first if data['teams']
         end
-        new(t) if t 
+
+        new(t) if t
       end
 
       # Returns a list of all NHL teams.
@@ -75,18 +76,12 @@ module NHL
 
     # Retrieves the teams next game.
     def next_game
-      response = Faraday.get("#{URL}/#{@id}?expand=team.schedule.next")
-      data = JSON.parse(response.body)
-      game = data[KEY][0]['nextGameSchedule']['dates'][0]['games'].first
-      Game.new(game)
+      last_or_previous_game('next')
     end
 
     # Retrieves a teams previous game.
     def previous_game
-      response = Faraday.get("#{URL}/#{@id}?expand=team.schedule.previous")
-      data = JSON.parse(response.body)
-      game = data[KEY][0]['previousGameSchedule']['dates'][0]['games'].first
-      Game.new(game)
+      last_or_previous_game('previous')
     end
 
     # Retrieve a teams overall stats for a specific season.
@@ -108,6 +103,16 @@ module NHL
         s['type']['displayName'] == modifier
       end
       stats['splits'][0]['stat']
+    end
+
+    # Gets the teams next or previous game.
+    def last_or_previous_game(modifier)
+      response = Faraday.get("#{URL}/#{@id}?expand=team.schedule.#{modifier}")
+      data = JSON.parse(response.body)
+      team_data = data[KEY][0]
+      if team_data.key?("#{modifier}GameSchedule")
+        Game.new(team_data["#{modifier}GameSchedule"]['dates'][0]['games'].first)
+      end
     end
   end
 end
