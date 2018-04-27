@@ -27,10 +27,17 @@ module NHL
 
       # Retrieves all games in a range of time.
       # Dates should be in the format YYYY-MM-DD.
-      def in_time_period(start_data, end_date)
+      def in_time_period(start_date, end_date)
         response = Faraday.get("#{URL}?startDate=#{start_date}&endDate=#{end_date}")
         data = JSON.parse(response.body)
-        data['dates'][0]['games'].map do |g| new(g) end
+        dates = data['dates']
+        games = []
+        dates.each do |date|
+          date['games'].each do |g| 
+            games << new(g)
+          end
+        end
+        games
       end
 
       # Retrieves all games from yesterday.
@@ -54,13 +61,17 @@ module NHL
       def games_on_date(date)
         response = Faraday.get("#{URL}?date=#{date}")
         data = JSON.parse(response.body)
-        data['dates'][0]['games'].map do |g| new(g) end
+        dates = data['dates']
+        if dates.empty?
+          []
+        else
+          dates[0]['games'].map do |g| new(g) end
+        end
       end
     end
 
     # Retrieve the team object for the home team.
     def home_team
-      puts @teams['home']['team']['id']
       Team.find(@teams['home']['team']['id'])
     end
 

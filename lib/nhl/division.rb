@@ -18,9 +18,10 @@ module NHL
     class << self
       # Search for a specific division either by id or name.
       def find(query)
-        query = titleize(query)
+        query = titleize(query) if query.is_a?(String)
         response = Faraday.get(URL)
         data = JSON.parse(response.body)
+        
         d = data[KEY].find do |d|
           [d['id'], d['name'], d['abbreviation']].include?(query)
         end

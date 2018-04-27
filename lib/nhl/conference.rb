@@ -17,9 +17,10 @@ module NHL
     class << self
       # Search for a specific conference either by id or name.
       def find(query)
-        query = titleize(query)
+        query = titleize(query) if query.is_a?(String)
         response = Faraday.get(URL)
         data = JSON.parse(response.body)
+        
         c = data[KEY].find do |c|
           [c['id'], c['name'], c['shortName'], c['abbreviation']].include?(query)
         end

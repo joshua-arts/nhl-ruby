@@ -27,9 +27,10 @@ module NHL
     class << self
       # Search for a specific player either by id or name.
       def find(query)
+        id = query.to_i
+
         # If the query isn't an id, we need to search all team rosters.
         # The API does not provide a nice way for searching by name.
-        id = query.to_i
         if id == 0
           response = Faraday.get("#{BASE}/teams?expand=team.roster")
           data = JSON.parse(response.body)
@@ -42,8 +43,7 @@ module NHL
             break if p
           end
 
-          return nil if p.nil?
-          id = p['person']['id']
+          id = p['person']['id'] if p
         end
 
         player_by_id(id)
