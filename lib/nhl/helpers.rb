@@ -40,8 +40,9 @@ def traverse_hash(data, keys)
 end
 
 # Initializes getters for all class instance variables.
-def initialize_getters
+def initialize_getters(blacklist = [])
   instance_variables.each do |v|
+    next if blacklist.include?(v)
     define_singleton_method(v.to_s.tr('@','')) do
       instance_variable_get(v)
     end

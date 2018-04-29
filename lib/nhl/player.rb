@@ -1,5 +1,6 @@
 require 'faraday'
 require 'json'
+require 'date'
 
 require 'nhl/helpers'
 
@@ -21,7 +22,7 @@ module NHL
       else
         set_instance_variables(ATTRIBUTES, player)
       end
-      initialize_getters
+      initialize_getters(%i(@birth_date))
     end
 
     class << self
@@ -187,6 +188,10 @@ module NHL
 
     def alternate_captain?
       @alternate_captain
+    end
+
+    def birth_date
+      Date.parse(@birth_date)
     end
 
     private
