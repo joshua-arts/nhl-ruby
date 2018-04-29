@@ -15,7 +15,7 @@ module NHL
 
     def initialize(game)
       set_instance_variables(ATTRIBUTES, game)
-      initialize_getters
+      initialize_getters(%i(@game_date))
     end
 
     class << self
@@ -80,6 +80,14 @@ module NHL
       Team.find(@teams['away']['team']['id'])
     end
 
+    def home
+      @teams['home']
+    end
+
+    def away
+      @teams['away']
+    end
+
     # Get the home teams record going into the game.
     def home_team_record
       @teams['home']['leagueRecord']
@@ -94,5 +102,11 @@ module NHL
     def state
       @status_detailed_state
     end
+
+    # Return a date object for game_date.
+    def date
+      Date.parse(@game_date)
+    end
+    alias game_date date
   end
 end

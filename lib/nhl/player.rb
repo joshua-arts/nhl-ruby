@@ -142,7 +142,7 @@ module NHL
     # when facing teams in a specified division. Accepts
     # division ids, names, and objects.
     def stats_vs_division(div, season = nil)
-      id = find_id(div, Divison)
+      id = find_id(div, Division)
       data = stats_request("vsDivision", season)
       data.find do |s| s["opponentDivision"]["id"] == id end
     end
