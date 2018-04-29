@@ -22,6 +22,13 @@ Or install it yourself as:
 
 ## Usage
 
+Table of Contents
+* [Teams](#teams)
+* [Players](#players)
+* [Games](#games)
+* [Conferences](#conferences)
+* [Divisions](#divisions)
+
 ### Teams
 
 ```ruby
@@ -147,7 +154,7 @@ game = NHL::Game.on_date("2017-12-12").first
 # Returns a list of NHL::Game objects from a date range (YYYY-MM-DD).
 NHL::Game.in_time_period("2017-12-12", "2017-12-15")
 
-# NOTE: on_date and in_time_period also accepts Date objects.
+# NOTE: on_date and in_time_period also accept Date objects.
 
 # Find all games today, tomorrow or yesterday.
 NHL::Game.today
@@ -210,12 +217,6 @@ division.conference_name # => Eastern
 # Returns a list of NHL::Team objects.
 division.teams
 ```
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
