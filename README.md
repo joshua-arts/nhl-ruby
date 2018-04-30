@@ -9,16 +9,8 @@ The API is not officially documented, but you can find some information [here](h
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'nhl'
+gem 'nhl', git: 'git://github.com/joshua-arts/nhl-ruby.git'
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install nhl
 
 ## Usage
 
